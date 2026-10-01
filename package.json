@@ -1,0 +1,11 @@
+{
+  "name": "abmgis",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Browser-first Agent-Based Modeling for GIS with BilaScript and PMTiles",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs"
+  },
+  "license": "MIT"
+}
