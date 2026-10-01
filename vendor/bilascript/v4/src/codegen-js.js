@@ -27,7 +27,7 @@ export function generateDetailed(ast) {
   function expr(n){ switch(n.type){
     case "Identifier": return id(n);
     case "ThisExpression": return "this";
-    case "Literal": return n.raw ?? (typeof n.value==="string"?JSON.stringify(n.value):n.value===null?"null":String(n.value));
+    case "Literal": if(n.numericKind) return n.raw; if(typeof n.value==="boolean") return String(n.value); if(n.value===null) return "null"; return n.raw ?? (typeof n.value==="string"?JSON.stringify(n.value):String(n.value));
     case "RegexLiteral": case "TemplateLiteralRaw": return n.raw;
     case "ArrayExpression": return "["+n.elements.map(expr).join(", ")+"]";
     case "ObjectExpression": return "{"+n.properties.map(p=>p.type==="SpreadElement"?"..."+expr(p.argument):p.shorthand?expr(p.key):`${p.key.type==="Identifier"?p.key.name:p.key.raw}: ${expr(p.value)}`).join(", ")+"}";
