@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0f2747" />
+  <meta name="description" content="ABMGIS — Agent-Based Modeling for GIS trên trình duyệt với BilaScript, PMTiles và Web Worker." />
+  <title>ABMGIS · BilaScript GeoABM</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+  <link rel="stylesheet" href="./styles.css" />
+  <script defer src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script defer src="https://unpkg.com/pmtiles@3.0.7/dist/pmtiles.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">A</span>
+      <div>
+        <strong>ABMGIS</strong>
+        <small>BilaScript · GeoABM trên trình duyệt</small>
+      </div>
+    </div>
+    <div class="top-actions">
+      <a class="ghost-link" href="https://github.com/xulytiengviet/ABMGIS" target="_blank" rel="noreferrer">GitHub ↗</a>
+      <a class="ghost-link" href="https://bila.js.org/" target="_blank" rel="noreferrer">BilaScript ↗</a>
+      <button id="exportBtn" class="btn secondary">Xuất .bila</button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <aside class="sidebar leftbar">
+      <section class="panel-block">
+        <label class="eyebrow" for="modelSelect">THƯ VIỆN MODEL</label>
+        <select id="modelSelect" class="select"></select>
+        <p id="modelDescription" class="muted"></p>
+      </section>
+
+      <section class="panel-block grow-scroll">
+        <div class="section-title">
+          <span>Tham số</span>
+          <button id="resetParamsBtn" class="mini-btn" title="Khôi phục tham số mặc định">Đặt lại</button>
+        </div>
+        <div id="params"></div>
+      </section>
+
+      <section class="panel-block">
+        <div class="section-title"><span>Tốc độ mô phỏng</span><strong id="speedValue">12 tick/s</strong></div>
+        <input id="speedSlider" type="range" min="1" max="120" value="12" step="1" />
+      </section>
+    </aside>
+
+    <section class="stage">
+      <nav class="tabs" aria-label="Chế độ làm việc">
+        <button class="tab active" data-tab="world">World</button>
+        <button class="tab" data-tab="gis">GIS / PMTiles</button>
+        <button class="tab" data-tab="code">BilaScript</button>
+      </nav>
+
+      <div class="stage-body">
+        <section id="panel-world" class="stage-panel active">
+          <canvas id="worldCanvas" width="1200" height="800" aria-label="ABM world"></canvas>
+          <div class="world-badge">Patch world <span id="worldSize">80 × 60</span></div>
+        </section>
+
+        <section id="panel-gis" class="stage-panel">
+          <div class="gis-toolbar">
+            <input id="pmtilesUrl" class="text-input wide" placeholder="https://.../data.pmtiles" />
+            <select id="pmtilesType" class="select compact">
+              <option value="vector">Vector PMTiles</option>
+              <option value="raster">Raster PMTiles</option>
+            </select>
+            <button id="addPmtilesBtn" class="btn primary">Nạp lớp</button>
+            <button id="syncAgentsBtn" class="btn secondary" title="Chiếu tọa độ World lên extent bản đồ hiện tại để xem thử">Chiếu agent lên bản đồ</button>
+          </div>
+          <div id="map"></div>
+          <div class="gis-note">PMTiles được đọc bằng HTTP Range Request. Nút “Chiếu agent” chỉ là preview World→extent; model GIS thực nên dùng tọa độ địa lý riêng.</div>
+        </section>
+
+        <section id="panel-code" class="stage-panel code-panel">
+          <div class="code-toolbar">
+            <div>
+              <strong>model.bila</strong>
+              <span id="compileStatus" class="status-chip neutral">Chưa biên dịch</span>
+            </div>
+            <div class="row-gap">
+              <button id="resetCodeBtn" class="btn secondary">Khôi phục mẫu</button>
+              <button id="compileBtn" class="btn primary">Biên dịch BilaScript</button>
+            </div>
+          </div>
+          <textarea id="codeEditor" spellcheck="false" aria-label="BilaScript editor"></textarea>
+          <div class="compiler-output">
+            <strong>Compiler</strong>
+            <pre id="compilerOutput">Sẵn sàng.</pre>
+          </div>
+        </section>
+      </div>
+
+      <footer class="sim-controls">
+        <button id="setupBtn" class="btn setup">↺ Setup</button>
+        <button id="stepBtn" class="btn secondary">Step</button>
+        <button id="runBtn" class="btn run">▶ Run</button>
+        <button id="stopBtn" class="btn stop">■ Stop</button>
+        <div class="control-divider"></div>
+        <span>Tick <strong id="tickInline">0</strong></span>
+        <span id="runtimeState" class="runtime-pill">Sẵn sàng</span>
+      </footer>
+    </section>
+
+    <aside class="sidebar rightbar">
+      <section class="panel-block monitors">
+        <div class="section-title"><span>Monitor</span><span class="live-dot"></span></div>
+        <div class="monitor-grid">
+          <div><small>Tick</small><strong id="tickMonitor">0</strong></div>
+          <div><small>Agents</small><strong id="agentMonitor">0</strong></div>
+        </div>
+        <div id="metricsList" class="metrics-list"></div>
+      </section>
+
+      <section class="panel-block chart-block">
+        <div class="section-title"><span id="chartTitle">Biểu đồ</span></div>
+        <canvas id="chartCanvas" width="420" height="220"></canvas>
+      </section>
+
+      <section class="panel-block console-block">
+        <div class="section-title"><span>Console</span><button id="clearConsoleBtn" class="mini-btn">Xóa</button></div>
+        <pre id="consoleOutput">ABMGIS ready.</pre>
+      </section>
+
+      <section class="panel-block about-block">
+        <strong>ABMGIS 0.1</strong>
+        <p>MVP mã nguồn mở theo tinh thần NetLogo: agent, patch, tick, model library, BilaScript và GIS/PMTiles.</p>
+      </section>
+    </aside>
+  </main>
+
+  <noscript>ABMGIS cần JavaScript để chạy mô phỏng.</noscript>
+  <script type="module" src="./src/app.js"></script>
+</body>
+</html>
