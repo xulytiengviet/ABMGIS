@@ -1,0 +1,154 @@
+:root{
+  --navy:#0f2747;
+  --navy-2:#183b67;
+  --blue:#2563eb;
+  --sky:#38bdf8;
+  --green:#16a34a;
+  --red:#dc2626;
+  --amber:#d97706;
+  --bg:#eef3f8;
+  --panel:#ffffff;
+  --line:#d8e1ec;
+  --text:#0f172a;
+  --muted:#64748b;
+  --soft:#f8fafc;
+  --shadow:0 8px 28px rgba(15,39,71,.08);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text)}
+body{overflow:hidden}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.topbar{
+  height:64px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;
+  padding:0 18px;border-bottom:1px solid rgba(255,255,255,.12)
+}
+.brand{display:flex;align-items:center;gap:11px}
+.brand-mark{
+  width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:#fff;color:var(--navy);font-weight:900
+}
+.brand strong{display:block;letter-spacing:.05em}
+.brand small{display:block;color:#c7d7ea;margin-top:2px;font-size:11px}
+.top-actions{display:flex;align-items:center;gap:8px}
+.ghost-link{color:#dbeafe;text-decoration:none;font-size:13px;padding:8px 10px;border-radius:8px}
+.ghost-link:hover{background:rgba(255,255,255,.08)}
+.workspace{
+  height:calc(100vh - 64px);display:grid;grid-template-columns:270px minmax(0,1fr) 280px;gap:0
+}
+.sidebar{
+  background:var(--panel);display:flex;flex-direction:column;min-height:0
+}
+.leftbar{border-right:1px solid var(--line)}
+.rightbar{border-left:1px solid var(--line)}
+.panel-block{padding:14px;border-bottom:1px solid var(--line)}
+.grow-scroll{min-height:0;overflow:auto;flex:1}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--muted);display:block;margin-bottom:8px}
+.select,.text-input{
+  width:100%;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:var(--text);padding:9px 10px;outline:none
+}
+.select:focus,.text-input:focus,textarea:focus{border-color:#60a5fa;box-shadow:0 0 0 3px rgba(96,165,250,.15)}
+.select.compact{width:auto;min-width:145px}
+.text-input.wide{min-width:260px;flex:1}
+.muted{color:var(--muted);font-size:12px;line-height:1.45;margin:9px 0 0}
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;font-weight:800;margin-bottom:10px}
+.mini-btn{border:0;background:transparent;color:var(--blue);padding:2px 4px;font-size:11px}
+.param{margin:0 0 14px}
+.param:last-child{margin-bottom:0}
+.param-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px}
+.param-head label{font-size:12px;font-weight:650}
+.param-value{font-size:11px;color:var(--navy);font-variant-numeric:tabular-nums;background:#eef4ff;padding:2px 6px;border-radius:6px}
+input[type="range"]{width:100%;accent-color:var(--blue)}
+.stage{min-width:0;min-height:0;display:grid;grid-template-rows:42px minmax(0,1fr) 58px;background:var(--bg)}
+.tabs{background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:end;padding:0 10px;gap:2px}
+.tab{
+  height:41px;padding:0 16px;border:0;background:transparent;color:var(--muted);font-weight:750;border-bottom:2px solid transparent
+}
+.tab:hover{color:var(--navy)}
+.tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.stage-body{position:relative;min-height:0}
+.stage-panel{display:none;position:absolute;inset:0}
+.stage-panel.active{display:block}
+#panel-world{background:#f8fafc;overflow:hidden}
+#worldCanvas{display:block;width:100%;height:100%;background:#f8fafc}
+.world-badge{
+  position:absolute;left:12px;top:12px;background:rgba(255,255,255,.92);border:1px solid var(--line);box-shadow:var(--shadow);
+  border-radius:8px;padding:6px 9px;font-size:11px;color:var(--muted)
+}
+#panel-gis{background:#eef3f8}
+.gis-toolbar{
+  position:absolute;z-index:3;left:12px;right:12px;top:12px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.95);
+  border:1px solid var(--line);border-radius:10px;padding:8px;box-shadow:var(--shadow)
+}
+#map{position:absolute;inset:0}
+.gis-note{
+  position:absolute;left:12px;bottom:12px;z-index:3;max-width:min(680px,calc(100% - 24px));background:rgba(15,39,71,.9);color:#e2e8f0;
+  font-size:11px;line-height:1.35;padding:7px 9px;border-radius:8px
+}
+.code-panel{background:#0b1220;color:#dbeafe;display:none!important;grid-template-rows:48px minmax(0,1fr) 110px}
+.code-panel.active{display:grid!important}
+.code-toolbar{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-bottom:1px solid #23324a;background:#101827}
+.row-gap{display:flex;gap:7px;align-items:center}
+.status-chip{font-size:10px;margin-left:8px;padding:3px 7px;border-radius:999px;border:1px solid}
+.status-chip.neutral{color:#cbd5e1;border-color:#475569}
+.status-chip.ok{color:#bbf7d0;border-color:#16a34a;background:rgba(22,163,74,.12)}
+.status-chip.err{color:#fecaca;border-color:#dc2626;background:rgba(220,38,38,.12)}
+#codeEditor{
+  width:100%;height:100%;resize:none;border:0;outline:0;padding:14px 16px;background:#0b1220;color:#e2e8f0;
+  font:13px/1.55 "SFMono-Regular",Consolas,"Liberation Mono",monospace;tab-size:2
+}
+.compiler-output{border-top:1px solid #23324a;background:#101827;padding:8px 10px;overflow:auto}
+.compiler-output strong{font-size:11px;color:#93c5fd}
+#compilerOutput{margin:5px 0 0;white-space:pre-wrap;color:#cbd5e1;font-size:11px}
+.sim-controls{
+  background:#fff;border-top:1px solid var(--line);display:flex;align-items:center;gap:8px;padding:8px 12px;color:var(--muted);font-size:12px
+}
+.btn{border:1px solid transparent;border-radius:8px;padding:8px 11px;font-weight:750;font-size:12px;white-space:nowrap}
+.btn.primary,.btn.run{background:var(--blue);color:#fff}
+.btn.primary:hover,.btn.run:hover{background:#1d4ed8}
+.btn.secondary{background:#fff;color:var(--navy);border-color:#cbd5e1}
+.btn.secondary:hover{background:#f8fafc}
+.btn.setup{background:#e0f2fe;color:#075985;border-color:#bae6fd}
+.btn.stop{background:#fff1f2;color:#be123c;border-color:#fecdd3}
+.control-divider{height:26px;width:1px;background:var(--line);margin:0 2px}
+.runtime-pill{margin-left:auto;background:#eef2ff;color:#4338ca;border-radius:999px;padding:5px 9px;font-weight:700}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.12)}
+.monitor-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.monitor-grid>div{background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:9px}
+.monitor-grid small{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.05em}
+.monitor-grid strong{display:block;font-size:21px;margin-top:3px;font-variant-numeric:tabular-nums}
+.metrics-list{margin-top:9px;display:grid;gap:6px}
+.metric-row{display:flex;align-items:center;justify-content:space-between;padding:7px 8px;background:#f8fafc;border-radius:7px;font-size:11px}
+.metric-row strong{font-variant-numeric:tabular-nums}
+.chart-block{padding-bottom:10px}
+#chartCanvas{display:block;width:100%;height:auto;background:#fff}
+.console-block{min-height:0;flex:1;display:flex;flex-direction:column}
+#consoleOutput{margin:0;min-height:0;overflow:auto;flex:1;background:#0f172a;color:#d1fae5;border-radius:8px;padding:8px;font:10px/1.45 "SFMono-Regular",Consolas,monospace;white-space:pre-wrap}
+.about-block p{margin:5px 0 0;color:var(--muted);font-size:11px;line-height:1.4}
+@media (max-width:1180px){
+  .workspace{grid-template-columns:235px minmax(0,1fr) 245px}
+  .top-actions .ghost-link{display:none}
+}
+@media (max-width:900px){
+  body{overflow:auto}
+  .workspace{height:auto;min-height:calc(100vh - 64px);grid-template-columns:1fr;grid-template-rows:auto 70vh auto}
+  .leftbar,.rightbar{border:0}
+  .leftbar{display:grid;grid-template-columns:1fr 2fr 1fr;border-bottom:1px solid var(--line)}
+  .leftbar .panel-block{border-bottom:0;border-right:1px solid var(--line)}
+  .grow-scroll{max-height:220px}
+  .stage{min-height:70vh}
+  .rightbar{display:grid;grid-template-columns:1fr 1fr}
+  .console-block,.about-block{display:none}
+  .gis-toolbar{flex-wrap:wrap}
+}
+@media (max-width:620px){
+  .topbar{padding:0 10px}
+  .brand small{display:none}
+  .top-actions{gap:4px}
+  .workspace{grid-template-rows:auto 68vh auto}
+  .leftbar{display:block}
+  .leftbar .panel-block{border-right:0;border-bottom:1px solid var(--line)}
+  .rightbar{display:block}
+  .top-actions #exportBtn{display:none}
+  .sim-controls{overflow-x:auto}
+}
